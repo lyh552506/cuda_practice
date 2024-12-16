@@ -20,8 +20,8 @@
 // #define FLOAT4(ptr) (reinterpret_cast<float4*>(&ptr)[0])
 #define FLOAT4(ptr) (reinterpret_cast<float4*>(&(ptr))[0])
 namespace helper {
-void genRandomMatrix(float* A, int M, int N) {
-  srand(0);  // Initialization, should only be called once.
+void genRandomMatrix(float* A, int M, int N,int seed=0) {
+  srand(seed);  // Initialization, should only be called once.
   float a = 5.0;
   for (int i = 0; i < M; i++) {
     for (int j = 0; j < N; j++) {

@@ -69,13 +69,11 @@ int main() {
   int bm = 128, bn = 128, bk = 8;
   int tm = 8, tn = 8;
   float *a, *b, *c;
+
   a = (float *)malloc(ASIZE(float));
   b = (float *)malloc(BSIZE(float));
   c = (float *)malloc(CSIZE(float));
 
-  //   helper::printMatrix(a, M, K);
-  //   helper::printMatrix(b, K, N);
-  //   helper::printMatrix(c, M, K);
   float *d_a, *d_b, *d_c;
   checkCudaErrors(cudaMalloc(&d_a, ASIZE(float)));
   checkCudaErrors(cudaMalloc(&d_b, BSIZE(float)));
@@ -88,6 +86,8 @@ int main() {
 
   dim3 Grid((M + bm - 1) / bm, (N + bn - 1) / bn, 1);
   dim3 Block(bm / tm, bn / tn, 1);
+  //   auto res = Performance<float>(Sgemm_v1, Grid, Block, M, N, K, 15);
+  //   printf("res:%d", res);
   Sgemm_v1<<<Grid, Block>>>(d_a, d_b, d_c, M, N, K);
   checkCudaErrors(cudaMemcpy(c, d_c, CSIZE(float), cudaMemcpyDeviceToHost));
   helper::printMatrix(c, M, N);
