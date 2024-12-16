@@ -14,7 +14,7 @@ __global__ void naivesgemm(float *a, float *b, float *c, const int M,
   auto tx = blockDim.x * blockIdx.x + threadIdx.x;
   auto ty = blockDim.y * blockIdx.y + threadIdx.y;
   if (tx < M && ty < N) {
-    int acc = 0;
+    float acc = 0;
 	#pragma unroll
     for (int i = 0; i < K; i++) {
       acc += a[tx * M + i] * b[i * N + ty];
@@ -24,7 +24,7 @@ __global__ void naivesgemm(float *a, float *b, float *c, const int M,
 }
 
 int main() {
-  int M = 128, N = 128, K = 64;
+  int M = 1024, N = 1024, K = 512;
   float *a, *b, *c;
   a = (float *)malloc(ASIZE(float));
   b = (float *)malloc(BSIZE(float));
@@ -37,8 +37,8 @@ int main() {
   checkCudaErrors(cudaMalloc(&d_a, ASIZE(float)));
   checkCudaErrors(cudaMalloc(&d_b, BSIZE(float)));
   checkCudaErrors(cudaMalloc(&d_c, CSIZE(float)));
-  helper::genRandomMatrix(a, M, K);
-  helper::genRandomMatrix(b, K, N);
+  helper::genRandomMatrix(a, M, K,0);
+  helper::genRandomMatrix(b, K, N,1);
   helper::genEmptyMatrix(c, M, N);
   checkCudaErrors(cudaMemcpy(d_a, a, ASIZE(float), cudaMemcpyHostToDevice));
   checkCudaErrors(cudaMemcpy(d_b, b, BSIZE(float), cudaMemcpyHostToDevice));

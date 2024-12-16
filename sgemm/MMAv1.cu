@@ -78,8 +78,8 @@ int main() {
   checkCudaErrors(cudaMalloc(&d_a, ASIZE(float)));
   checkCudaErrors(cudaMalloc(&d_b, BSIZE(float)));
   checkCudaErrors(cudaMalloc(&d_c, CSIZE(float)));
-  helper::genRandomMatrix(a, M, K);
-  helper::genRandomMatrix(b, K, N);
+  helper::genRandomMatrix(a, M, K, 0);
+  helper::genRandomMatrix(b, K, N, 1);
   helper::genEmptyMatrix(c, M, N);
   checkCudaErrors(cudaMemcpy(d_a, a, ASIZE(float), cudaMemcpyHostToDevice));
   checkCudaErrors(cudaMemcpy(d_b, b, BSIZE(float), cudaMemcpyHostToDevice));
@@ -90,5 +90,5 @@ int main() {
   //   printf("res:%d", res);
   Sgemm_v1<<<Grid, Block>>>(d_a, d_b, d_c, M, N, K);
   checkCudaErrors(cudaMemcpy(c, d_c, CSIZE(float), cudaMemcpyDeviceToHost));
-  helper::printMatrix(c, M, N);
+//   helper::printMatrix(c, M, N);
 }
