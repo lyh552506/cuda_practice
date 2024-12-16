@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <vector_types.h>
 
 #include <iostream>
 
@@ -16,6 +17,8 @@
       printf("%s %d CUDA: %s\n", __FILE__, __LINE__, cudaGetErrorString(e)); \
   }
 
+// #define FLOAT4(ptr) (reinterpret_cast<float4*>(&ptr)[0])
+#define FLOAT4(ptr) (reinterpret_cast<float4*>(&(ptr))[0])
 namespace helper {
 void genRandomMatrix(float* A, int M, int N) {
   srand(0);  // Initialization, should only be called once.

@@ -1,5 +1,5 @@
 #include <cuda_runtime.h>
-
+#include "cublas_v2.h"
 #include <cassert>
 #include <cstdint>
 #include <cstdlib>
@@ -46,6 +46,7 @@ int main() {
   dim3 Grid((M + 31) / 32, (N + 31) / 32, 1);
   dim3 Block(32, 32, 1);
   naivesgemm<<<Grid, Block>>>(d_a, d_b, d_c, M, N, K);
+//   cublasSgemm()
   checkCudaErrors(cudaMemcpy(c, d_c, CSIZE(float), cudaMemcpyDeviceToHost));
   helper::printMatrix(c, M, N);
 }
