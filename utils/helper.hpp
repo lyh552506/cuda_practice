@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <vector_types.h>
 
 #include <iostream>
 
@@ -20,23 +19,26 @@
 // #define FLOAT4(ptr) (reinterpret_cast<float4*>(&ptr)[0])
 #define FLOAT4(ptr) (reinterpret_cast<float4*>(&(ptr))[0])
 namespace helper {
-void genRandomMatrix(float* A, int M, int N,int seed=0) {
+template<typename tp>
+void genRandomMatrix(tp* A, int M, int N,int seed=0) {
   srand(seed);  // Initialization, should only be called once.
-  float a = 5.0;
+  tp a = 5.0;
   for (int i = 0; i < M; i++) {
     for (int j = 0; j < N; j++) {
-      A[i * N + j] = (float)rand() / ((float)RAND_MAX / a);
+      A[i * N + j] = (tp)rand() / ((tp)RAND_MAX / a);
     }
   }
 }
 
-void genEmptyMatrix(float* A, int M, int N) {
+template<typename tp>
+void genEmptyMatrix(tp* A, int M, int N) {
   for (int i = 0; i < M; i++) {
     for (int j = 0; j < N; j++) A[i * N + j] = 0;
   }
 }
 
-void printMatrix(float* A, int M, int N) {
+template<typename tp>
+void printMatrix(tp* A, int M, int N) {
   for (int i = 0; i < M; i++) {
     // std::cout << "Row:" << i << " ";
     for (int j = 0; j < N; j++) {
